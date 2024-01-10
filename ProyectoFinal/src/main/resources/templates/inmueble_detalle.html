@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+  <head th:replace="/fragments/head :: head">
+    <!-- <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <link rel="stylesheet" th:href="@{/css/inmuebleDetalleStyle.css}" /> -->
+  </head>
+  <body>
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    
+    <div class="row" style="justify-content: center; display: flex" >
+    <div class="container" style= " margin-top: 4em; margin-bottom: 8em; border-radius: 1.5rem">
+        <h2>Detalle</h2>
+        
+        <h3>Galería de imágenes</h3>
+      <hr />
+      <br />
+        <div class="col-md-12" style="margin-left: 13em"> 
+      
+      <!-- Galería de imágenes -->
+      <div id="image-gallery" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li
+            th:each="imageInfo, indexStat : ${imagenesInfo}"
+            data-target="#image-gallery"
+            th:data-slide-to="${indexStat.index}"
+            th:class="${indexStat.index == 0} ? 'active' : ''"
+          ></li>
+        </ol>
+        <div class="carousel-inner">
+          <div
+            th:each="imageInfo, indexStat : ${imagenesInfo}"
+            th:class="${indexStat.index == 0} ? 'carousel-item active' : 'carousel-item'"
+          >
+            <img
+              th:src="|data:${imageInfo.mime};base64,${imageInfo.base64}|"
+              alt="Imagen Secundaria del Inmueble"
+              style="
+                max-width: 600px;
+                max-height: 600px;
+                border-radius: 1.5rem;
+              "
+            />
+          </div>
+        </div>
+        <a
+          class="carousel-control-prev"
+          href="#image-gallery"
+          role="button"
+          data-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Anterior</span>
+        </a>
+        <a
+          class="carousel-control-next"
+          href="#image-gallery"
+          role="button"
+          data-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Siguiente</span>
+        </a>
+      </div>
+      <!-- Contenedor de Miniaturas -->
+      <div class="carousel-thumbnails">
+        <div class="row">
+          <div th:each="imageInfo, indexStat : ${imagenesInfo}" class="col">
+            <img
+              th:src="|data:${imageInfo.mime};base64,${imageInfo.base64}|"
+              alt="Miniatura"
+              class="img-thumbnail"
+              th:onclick="'javascript:goToSlide(' + ${indexStat.index} + ');'"
+              style="
+                cursor: pointer;
+                max-height: 150px;
+                object-fit: cover;
+                border-radius: 1.5rem;
+              "
+            />
+          </div>
+        </div>
+      </div>
+       </div>
+        <div class="col-md-12">
+      <style>
+        @import url("https://fonts.googleapis.com/css?family=Oswald:300|Roboto:300,500");
+        html,
+        body {
+          min-height: 100%;
+        }
+
+        html {
+          overflow-y: scroll;
+          font-size: 18px;
+        }
+
+        body {
+          font-size: 1rem;
+          font-weight: 300;
+          font-family: Roboto, sans-serif;
+          line-height: 1.4;
+          color: #546e7a;
+          background-color: #eceff1;
+        }
+
+        p,
+        ul,
+        li {
+          margin: 0;
+          padding: 0;
+          margin-bottom: 24px;
+        }
+        p:last-child,
+        ul:last-child,
+        li:last-child {
+          margin-bottom: 0;
+        }
+
+        a {
+          color: #00acc1;
+        }
+
+        code {
+          background: #eceff1;
+        }
+
+        .wrapper {
+          max-width: 640px;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 48px;
+        }
+
+        .details-group {
+          border: 1px solid #cfd8dc;
+          border-radius: 5px;
+          background-color: white;
+        }
+
+        .details {
+          overflow: hidden;
+          border-bottom: 1px solid #cfd8dc;
+          transition: height 300ms ease-in-out;
+        }
+        .details:last-child {
+          border-bottom: 0;
+        }
+        .details__summary,
+        .details__content {
+          padding: 24px;
+        }
+        .details__summary {
+          position: relative;
+          list-style: none;
+          padding-left: 48px;
+          outline: 0;
+          cursor: pointer;
+          font-size: 1.4rem;
+          font-family: Oswald;
+          text-transform: uppercase;
+          transition: color 300ms ease-in-out;
+        }
+        [open] > .details__summary {
+          color: #00acc1;
+        }
+        .details__summary::-webkit-details-marker {
+          display: none;
+        }
+        .details__summary:before,
+        .details__summary:after {
+          content: "";
+          position: absolute;
+        }
+        .details__summary:before {
+          left: 20px;
+          top: 50%;
+          height: 2px;
+          margin-top: -1px;
+          width: 16px;
+          background: #00acc1;
+        }
+        .details__summary:after {
+          left: 28px;
+          top: 50%;
+          height: 16px;
+          margin-top: -8px;
+          width: 2px;
+          margin-left: -1px;
+          background: #00acc1;
+          transition: all 300ms ease-in-out;
+        }
+        [open] .details__summary:after {
+          opacity: 0;
+          transform: translateY(25%);
+        }
+        .details__content {
+          padding-top: 0;
+          padding-left: 48px;
+        }
+      </style>
+      <br>
+       <hr />
+      <h3>Información</h3>
+       <hr />
+      <div class="wrapper">
+        <section class="details-group">
+          <details class="details" open>
+            <summary class="details__summary">Detalle</summary>
+            <div class="details__content">
+              <h5 th:text="${inmueble.tituloAnuncio}"></h5>
+              <p th:text="${inmueble.descripcionAnuncio}"></p>
+            </div>
+          </details>
+
+          <details class="details">
+            <summary class="details__summary">Ubicación</summary>
+            <div class="details__content">
+              <ul>
+                <li>
+                  <strong>Tipo:</strong>
+                  <span th:text="${inmueble.tipoInmueble}"></span>
+                </li>
+                <li>
+                  <strong>Provincia:</strong>
+                  <span th:text="${inmueble.provincia}"></span>
+                </li>
+                <li>
+                  <strong>Ciudad:</strong>
+                  <span th:text="${inmueble.ciudad}"></span>
+                </li>
+                <li>
+                  <strong>Dirección:</strong>
+                  <span th:text="${inmueble.direccion}"></span>
+                </li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="details">
+            <summary class="details__summary">Características</summary>
+            <div class="details__content">
+              <li>
+                <span
+                  th:text="${'Habitaciones: ' + inmueble.cantidadHabitaciones}"
+                ></span>
+              </li>
+              <li><span th:text="${'Baños: ' + inmueble.banios}"></span></li>
+              <li>
+                <span
+                  th:text="${'Ambientes: ' + inmueble.cantidadAmbientes}"
+                ></span>
+              </li>
+              <li><span th:text="${'Superficie total (m²): ' + inmueble.superficieTotal}"></span></li>
+              <li><span th:text="${'Superficie Cubierta (m²): ' + inmueble.superficieCubierta}"></span></li>
+            </div>
+          </details>
+
+          <details class="details">
+            <summary class="details__summary">Horarios</summary>
+            <div class="details__content">
+              <span
+                th:each="rangoHorario : ${inmueble.rangosHorarios}"
+                th:text="${rangoHorario.diaSemana + ' Desde: ' + rangoHorario.horaInicio + ' Hasta: ' + rangoHorario.horaFin}"
+              ></span>
+            </div>
+          </details>
+          <details class="details">
+            <summary class="details__summary">Valoración</summary>
+            <div class="details__content">
+              <ul>
+                <li>
+                  <span th:text="${inmueble.precio}"></span>
+                  <span
+                    th:text="${inmueble.moneda == 'dolar' ? 'USD' : 'ARS'}"
+                  ></span>
+                </li>
+
+                <li>
+                  <p>
+                    <strong>Estado:</strong>
+                    <span th:text="${inmueble.estado}"></span>
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </details>
+        </section>
+      </div>
+      </div>
+    
+      
+
+      <!-- Información del inmueble -->
+      <!-- <div class="inmueble-info">
+          <h3 th:text="${inmueble.tituloAnuncio}"></h3>
+          <p th:text="${inmueble.descripcionAnuncio}"></p>
+        <ul>
+          <li>
+            <strong>Tipo de Inmueble:</strong>
+            <span th:text="${inmueble.tipoInmueble}"></span>
+          </li>
+          <li>
+            <strong>Provincia:</strong>
+            <span th:text="${inmueble.provincia}"></span>
+          </li>
+          <li>
+            <strong>Ciudad:</strong>
+            <span th:text="${inmueble.ciudad}"></span>
+          </li>
+          <li>
+            <strong>Dirección:</strong>
+            <span th:text="${inmueble.direccion}"></span>
+          </li>
+          <li>
+            <strong>Oferta:</strong>
+            <span th:text="${inmueble.transaccion}"></span>
+          </li>
+          <li>
+            <strong>Características del Inmueble:</strong>
+            <span
+              th:text="${'Habitaciones: ' + inmueble.cantidadHabitaciones}"
+            ></span>
+            <span th:text="${'Baños: ' + inmueble.banios}"></span>
+            <span
+              th:text="${'Ambientes: ' + inmueble.cantidadAmbientes}"
+            ></span>
+            <span th:text="${'Altura: ' + inmueble.altura}"></span>
+            <span th:text="${'Largo: ' + inmueble.largo}"></span>
+          </li>
+          <li>
+            <strong>Horarios Disponibles:</strong>
+            <span
+              th:each="rangoHorario : ${inmueble.rangosHorarios}"
+              th:text="${rangoHorario.diaSemana + ' Desde: ' + rangoHorario.horaInicio + ' Hasta: ' + rangoHorario.horaFin}"
+            ></span>
+          </li>
+          <li>
+            <strong>Valor del Inmueble:</strong>
+            <span th:text="${inmueble.precio}"></span>
+            <span
+              th:text="${inmueble.moneda == 'dolar' ? 'USD' : 'ARS'}"
+            ></span>
+          </li>
+          <p>
+            <strong>Estado:</strong> <span th:text="${inmueble.estado}"></span>
+          </p>
+          <div class="text-center"> -->
+                   
+      <!--      botones -->
+      <hr />
+      <div class="im-dt">
+        <a
+          href="#"
+          th:href="@{/cita/registrar/{cuentaTributaria}(cuentaTributaria=${cuentaTributaria})}"
+          class="btn btn-primary"
+        >
+          <button class="btn btn-primary">
+            Pedir una cita
+          </button>
+        </a>
+      </div>
+
+      <div class="im-dt">
+        <!-- Solicitar DNI ya deberia cumplir con la funcion de la autorización (creo)
+                  th:if="${#authorization.expression('hasRole(''CLIENTE'')')}" -->
+        <a
+          th:href="@{/oferta/enviar/{cuentaTributaria}(cuentaTributaria=${cuentaTributaria})}"
+          class="btn btn-primary"
+        >
+          <button class="btn btn-primary" id="ofertarButton">Ofertar</button>
+        </a>
+      </div>
+        <!-- Botón para usuarios con rol CLIENTE -->
+        <div class="im-dt">
+        <a
+          th:if="${#authorization.expression('hasRole(''CLIENTE'')')}"
+          th:href="@{/reclamo/reclamar/{cuentaTributaria}(cuentaTributaria=${cuentaTributaria})}"
+          class="btn btn-primary"
+        >
+          <button class="btn btn-primary">Reclamar</button>
+        </a>
+        </div>
+
+        <!-- Botón para usuarios con rol ADMIN o ENTE -->
+        <div class="im-dt">
+        <a
+          sec:authorize="hasAnyRole('ADMIN', 'ENTE')"
+          th:href="@{/reclamo/lista/{cuentaTributaria}(cuentaTributaria=${cuentaTributaria})}"
+          class="btn btn-primary"
+        >
+          <button class="btn btn-primary">Listar Reclamos</button>
+        </a>
+      </div>
+
+      <div class="im-dt">
+        <div class="divVolver">
+          <a th:href="@{/}" class="btn btn-secondary my-2 botonVolver botones"
+            >Inicio
+          </a>
+        </div>
+      </div>
+    </div>
+        </div>
+    
+    <hr>
+  
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Script para solicitar DNI -->
+
+    <script th:unless="${#authorization.expression('isAuthenticated')}">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Función para solicitar DNI
+        function solicitarDNI(accion) {
+          var dni;
+
+          if (accion === "cita") {
+            dni = prompt("Por favor, ingrese su DNI para solicitar una cita:");
+          } else if (accion === "ofertar") {
+            dni = prompt("Por favor, ingrese su DNI para ofertar:");
+          }
+
+          if (dni != null) {
+            // Realiza una llamada al backend para verificar el DNI
+            verificarDNIEnBackend(dni, accion);
+          }
+        }
+
+        // Función para verificar el DNI en el backend
+        function verificarDNIEnBackend(dni, accion) {
+          console.log("Entró a la funcion VerificarDNIenBack");
+          $.ajax({
+            type: "GET",
+            url: "/usuario/verificarDNI",
+            data: { DNI: dni },
+            success: function (response) {
+              console.log(response); // Aquí puedes manejar la respuesta
+
+              // Ejemplo de manejo de respuesta JSON
+              if (response === "DNI encontrado") {
+                alert(
+                  "El DNI fue encontrado. Puedes redirigir al usuario o realizar otras acciones."
+                );
+                window.location.href = "/login";
+              } else {
+                alert(
+                  "El DNI no fue encontrado. Puedes mostrar un mensaje al usuario o realizar otras acciones."
+                );
+              }
+            },
+            error: function () {
+              // Manejar errores de la solicitud AJAX
+              console.log(dni);
+              alert(
+                "Error al verificar el DNI. Por favor, inténtelo de nuevo."
+              );
+              window.location.href = "/usuario/registrar";
+            },
+          });
+        }
+
+        // Asociar la función a los botones (asegúrate de que estos elementos existan en tu HTML)
+        var pedirCitaButton = document.getElementById("pedirCitaButton");
+        var ofertarButton = document.getElementById("ofertarButton");
+
+        if (pedirCitaButton) {
+          pedirCitaButton.addEventListener("click", function () {
+            solicitarDNI("cita");
+          });
+        }
+
+        if (ofertarButton) {
+          ofertarButton.addEventListener("click", function () {
+            solicitarDNI("ofertar");
+          });
+        }
+      });
+    </script>
+    <script>
+      // Función para navegar a un slide específico en el carrusel
+      function goToSlide(index) {
+        $("#image-gallery").carousel(index);
+      }
+
+      class Details {
+        constructor(el, settings) {
+          this.group = el;
+          this.details = this.group.getElementsByClassName("details");
+          this.toggles = this.group.getElementsByClassName("details__summary");
+          this.contents = this.group.getElementsByClassName("details__content");
+
+          // Set default settings if necessary
+          this.settings = Object.assign(
+            {
+              speed: 300,
+              one_visible: false,
+            },
+            settings
+          );
+
+          // Setup inital positions
+          for (let i = 0; i < this.details.length; i++) {
+            const detail = this.details[i];
+            const toggle = this.toggles[i];
+            const content = this.contents[i];
+
+            // Set transition-duration to match JS setting
+            detail.style.transitionDuration = this.settings.speed + "ms";
+
+            // Set initial height to transition from
+            if (!detail.hasAttribute("open")) {
+              detail.style.height = toggle.clientHeight + "px";
+            } else {
+              detail.style.height =
+                toggle.clientHeight + content.clientHeight + "px";
+            }
+          }
+
+          // Setup click handler
+          this.group.addEventListener("click", (e) => {
+            if (e.target.classList.contains("details__summary")) {
+              e.preventDefault();
+
+              let num = 0;
+              for (let i = 0; i < this.toggles.length; i++) {
+                if (this.toggles[i] === e.target) {
+                  num = i;
+                  break;
+                }
+              }
+
+              if (!e.target.parentNode.hasAttribute("open")) {
+                this.open(num);
+              } else {
+                this.close(num);
+              }
+            }
+          });
+        }
+
+        open(i) {
+          const detail = this.details[i];
+          const toggle = this.toggles[i];
+          const content = this.contents[i];
+
+          // If applicable, hide all the other details first
+          if (this.settings.one_visible) {
+            for (let a = 0; a < this.toggles.length; a++) {
+              if (i !== a) this.close(a);
+            }
+          }
+
+          // Update class
+          detail.classList.remove("is-closing");
+
+          // Get height of toggle
+          const toggle_height = toggle.clientHeight;
+
+          // Momentarily show the contents just to get the height
+          detail.setAttribute("open", true);
+          const content_height = content.clientHeight;
+          detail.removeAttribute("open");
+
+          // Set the correct height and let CSS transition it
+          detail.style.height = toggle_height + content_height + "px";
+
+          // Finally set the open attr
+          detail.setAttribute("open", true);
+        }
+
+        close(i) {
+          const detail = this.details[i];
+          const toggle = this.toggles[i];
+
+          // Update class
+          detail.classList.add("is-closing");
+
+          // Get height of toggle
+          const toggle_height = toggle.clientHeight;
+
+          // Set the height so only the toggle is visible
+          detail.style.height = toggle_height + "px";
+
+          setTimeout(() => {
+            // Check if still closing
+            if (detail.classList.contains("is-closing"))
+              detail.removeAttribute("open");
+            detail.classList.remove("is-closing");
+          }, this.settings.speed);
+        }
+      }
+
+      (() => {
+        const els = document.getElementsByClassName("details-group");
+
+        for (let i = 0; i < els.length; i++) {
+          const details = new Details(els[i], {
+            speed: 500,
+            one_visible: true,
+          });
+        }
+      })();
+    </script>
+
+    <!-- <script th:unless="${#authorization.expression('isAuthenticated')}">>
+  function solicitarDNI() {
+      // Obtener el DNI del usuario de la página (ajusta esto según la estructura de tu página)
+      var dniUsuario = document.getElementById("dniUsuario").innerText;
+
+      // Comprobar si el DNI del usuario está presente
+      if (dniUsuario) {
+          // Lista de DNIs existentes (puedes obtenerla desde tu backend o definirla aquí)
+          var dnisValidos = ["12345678", "87654321", "55555555"];
+
+          // Comprobar si el DNI del usuario está en la lista
+          if (dnisValidos.includes(dniUsuario)) {
+              // Redirigir a la página de inicio de sesión
+              window.location.href = "/login";
+          } else {
+              // Redirigir a la página de registro
+              window.location.href = "/registro";
+          }
+      } else {
+          // Aquí puedes manejar el caso en el que el DNI del usuario no está presente en la página
+          alert("No se puede obtener el DNI del usuario.");
+      }
+  }
+</script> -->
+    <div
+      th:replace="fragments/footer :: footer"
+    ></div>
+  </body>
+</html>

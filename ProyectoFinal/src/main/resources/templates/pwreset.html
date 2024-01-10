@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Buscasitas.com.ar - Login</title>
+
+    <meta
+      charset="utf-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+
+    <link
+      rel="shortcut icon"
+      sizes="76x76"
+      type="image/x-icon"
+      th:href="@{images/logoInmobiliaria2.png}"
+    />
+  </head>
+  <head th:replace="fragments/head :: head"> </head>
+
+  <body>
+    <!-- This is to display the Navbar of the website. -->
+    <nav th:replace="fragments/navbar :: nav"></nav>
+
+    <!-- This is to make the Form Contents appear on the Image -->
+    <section class="vh-100" id="hero">
+      <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+          <div class="col-md-8 col-lg-7 col-xl-6">
+            <br />
+            <img
+              src="/images/Neiboorhood.jpeg"
+              alt="Phone image"
+              id="Neiboorhood"
+            />
+
+            <br />
+            <br />
+
+            <div th:if="${error != null}">
+              <p class="text-danger">[[${error}]]</p>
+            </div>
+            <div th:if="${mensaje != null}">
+              <p class="text-warning">[[${mensaje}]]</p>
+            </div>
+
+            <form
+              th:action="@{/pwreset}"
+              method="post"
+              style="max-width: 420px; margin: 0 auto"
+            >
+              <div>
+                <div>
+                  <label class="form-label"
+                    ><small class="form-text text-muted"
+                      >Verificaremos su direccón de correo electrónico. Si posee
+                      un usuario validado, recibirá un link de un solo uso.
+                      Ingrese y restablesca su contraseña.</small
+                    ></label
+                  >
+                  <input
+                    name="email"
+                    type="email"
+                    id="form1Example13"
+                    th:value="${email}"
+                    class="form-control form-control-lg"
+                    placeholder="Ingrese su email"
+                  />
+                  <small id="emailHelp" class="form-text text-muted"
+                    >* Nunca compartiremos con nadie su datos personales.</small
+                  >
+                </div>
+                <!-- Submit button -->
+                <br />
+                <button
+                  type="submit"
+                  value="send"
+                  class="btn btn-primary btn-lg btn-block"
+                >
+                  Enviar
+                </button>
+
+                <div class="divider d-flex align-items-center my-4"></div>
+              </div>
+            </form>
+            <section class="text-center container">
+              <div class="row mt-3">
+                <div class="divVolver">
+                  <a
+                    th:href="@{/}"
+                    class="btn btn-secondary my-2 botonVolver botones"
+                    >Volver</a
+                  >
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Form Ends here. -->
+
+    <!-- The below section displays the Reviews and Feedbacks given by the users. -->
+
+    <br />
+
+    <!-- Reviews and Feedbacks which uses Bootstrap Grid property, includes images  -->
+
+    <hr />
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!--JavaScript-->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

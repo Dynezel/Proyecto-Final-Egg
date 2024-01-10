@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Buscasitas.com.ar - Login</title>
+
+    <meta
+      charset="utf-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      i
+      ntegrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+
+    <link
+      rel="shortcut icon"
+      sizes="76x76"
+      type="image/x-icon"
+      th:href="@{images/logoInmobiliaria2.png}"
+    />
+  </head>
+  <head th:replace="fragments/head :: head"> </head>
+
+  <body>
+    <!-- This is to display the Navbar of the website. -->
+    <nav th:replace="fragments/navbar :: nav"></nav>
+
+    <!-- This is to make the Form Contents appear on the Image -->
+    <section class="vh-100" id="hero">
+      <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+          <div class="col-md-8 col-lg-7 col-xl-6">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+              class="img-fluid"
+              alt="Phone image"
+              id="login-imagen"
+            />
+          </div>
+          <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+            <div class="form-outline mb-4">
+              <div
+                th:if="${error != null}"
+                class="card text-white bg-danger mb-3 mensajeError"
+              >
+                <div class="card-body"></div>
+                <h5 class="card-title">Error!</h5>
+                <p class="card-text" th:text="${error}"></p>
+              </div>
+            </div>
+            <div
+              th:if="${exito != null}"
+              class="card text-white bg-success mb-3 mt-3 mensajeExito"
+            >
+              <div class="card-body">
+                <h5 class="card-title">Exito!</h5>
+                <p class="card-text" th:text="${exito}"></p>
+              </div>
+            </div>
+
+            <form th:action="@{/logincheck}" method="POST">
+              <!-- Email input -->
+              <div>
+                <input
+                  name="email"
+                  type="email"
+                  id="form1Example13"
+                  th:value="${email}"
+                  class="form-control form-control-lg"
+                />
+                <label class="form-label" for="form1Example13"
+                  >Dirección de correo electrónico</label
+                >
+              </div>
+
+              <!-- Password input -->
+              <div class="form-outline mb-4">
+                <input
+                  name="contrasenia"
+                  type="password"
+                  id="form1Example23"
+                  th:value="${contrasenia}"
+                  class="form-control form-control-lg"
+                />
+                <label class="form-label" for="form1Example23"
+                  >Contraseña</label
+                >
+              </div>
+              <div class="text-left">
+                <p>
+                  ¿No tienes una cuenta?
+                  <a th:href="@{/usuario/registrar}">Regístrate</a>
+                </p>
+              </div>
+
+              <div
+                class="d-flex justify-content-around align-items-center mb-4"
+              >
+                <!-- Checkbox -->
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="form1Example3"
+                    checked
+                  />
+                  <label class="form-check-label" for="form1Example3">
+                    Recuérdame
+                  </label>
+                </div>
+                <a th:href="@{/pwreset}">Olvidó su contraseña?</a>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-lg btn-block">
+                Ingresa aquí
+              </button>
+
+              <div class="divider d-flex align-items-center my-4"></div>
+            </form>
+
+            <section class="text-center container">
+              <div class="row mt-3">
+                <div class="divVolver">
+                  <a
+                    th:href="@{/}"
+                    id="back-link"
+                    class="btn btn-secondary my-2 botonVolver botones"
+                    >Volver</a
+                  >
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Form Ends here. -->
+
+    <!-- The below section displays the Reviews and Feedbacks given by the users. -->
+
+    <br />
+
+    <!-- Reviews and Feedbacks which uses Bootstrap Grid property, includes images  -->
+
+    <hr />
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!--JavaScript-->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,799 @@
+h1 {
+  align-items: center;
+}
+* {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  text-decoration: none;
+}
+
+.body .main {
+  background: url(../images/fondo_inmo.png);
+}
+
+.imagenFondoIndex {
+  background: url(../images/dfp-alquiler.jpg);
+  width: 100%;
+  height: auto;
+  max-height: 1200px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  }
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#logo {
+  height: 4em;
+  padding-left: 1em;
+  fill: currentcolor;
+  color: white;
+  object-fit: contain;
+  }
+#logo-container {
+  display: flex; /* Agrega display: flex al contenedor del logo y el texto */
+  align-items: center; /* Centra los elementos verticalmente dentro del contenedor */
+}
+
+.logo-text {
+  padding-top: 1em;
+  margin: auto !important;
+  padding-left: 1em;
+  background-image: linear-gradient(
+    45deg,
+    blueviolet,
+    lightblue
+  ); /* Degradado de blueviolet a lightblue */
+  -webkit-background-clip: text; /* Clip de fondo al texto para que el degradado solo afecte al texto en navegadores webkit (Safari, Chrome) */
+  background-clip: text;
+  color: transparent; /* Texto transparente para que se muestre el degradado de fondo */
+  font-size: 36px;
+  animation: colorChange 2s infinite; /* Animación de cambio de color infinita en 4 segundos */
+}
+.header {
+  background-color: lightblue;
+  flex-basis: 60px;
+}
+
+nav {
+  color: white;
+  background-color: blueviolet;
+  background-image: linear-gradient(150deg, #000, #0000ff, #fff);
+  display: flex; /* Esto asegurará que los hijos de nav se alineen en línea y te permitirá alinearlos verticalmente */
+  align-items: center; /* Esto centrará verticalmente los hijos de nav */
+  justify-content: space-between; /* Esto separa el logo y los elementos del menú */
+  padding: 1em 1em 0; /* Añade un poco de padding horizontal para que el contenido no toque los bordes */
+  height: 6em; /* Si el contenido interno es más grande, puedes ajustar esto */
+  overflow: hidden;
+  border-bottom: 2.5px ridge #d0b084;
+}
+#detalleInmueble-button {
+  color: white;
+  background-color: blueviolet;
+  background-image: linear-gradient(150deg, #000, #0000ff, #fff);
+  display: flex; /* Esto asegurará que los hijos de nav se alineen en línea y te permitirá alinearlos verticalmente */
+  width: 100%;
+  align-items: center; /* Esto centrará verticalmente los hijos de nav */
+  justify-content: space-between; /* Esto separa el logo y los elementos del menú */
+  padding: 1em 1em 0; /* Añade un poco de padding horizontal para que el contenido no toque los bordes */
+  height: 6em; /* Si el contenido interno es más grande, puedes ajustar esto */
+  overflow: hidden;
+}
+.containerImg {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: white !important; /* Cambiar a blanco y usar !important para anular estilos previos */
+  transition: color 1s;
+}
+.container-index {
+  padding-top: 10em;
+  padding-left: 30em;
+  box-sizing: border-box;
+  align-content: center;
+  justify-content: center;
+}
+.container-custom {
+  padding-top: 10em;
+  padding-left: 30em;
+  box-sizing: border-box;
+  background-color: aliceblue;
+  align-content: center;
+  justify-content: center;
+}
+.btn-info,
+.btn-info:active {
+  display: inline-block;
+  /* Ajusta el relleno según tus preferencias */
+  background-color: rgb(64, 98, 233); /* Color de fondo del botón */
+  color: #fff; /* Color de texto */
+  text-decoration: none;
+  /* Bordes redondeados */
+  transition: background-color 0.3s; /* Transición de color suave */
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 2px solid black;
+  box-shadow: 2px 2px 10px black;
+  color: white;
+  background-color: blueviolet;
+  background-image: linear-gradient(150deg, #9500ff, #09f, #00ddff);
+
+  cursor: pointer;
+  transition: 0.3s;
+  border: 0;
+}
+
+.btn-info:hover {
+  background-color: blueviolet;
+  cursor: pointer;
+}
+
+h1 .title {
+  font-size: xx-large;
+  font-weight: bolder;
+}
+
+@media only screen and (max-width: 500px) {
+  .nav__ul {
+    display: none;
+  }
+
+  .nav__responsive-ul {
+    display: block;
+  }
+}
+
+.main {
+  background-color: slateblue;
+  flex-basis: 300px;
+  flex-grow: 2;
+  flex-shrink: 0;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-rows: 150px 150px 150px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-auto-flow: row;
+  border: 3px solid #000;
+  background-color: #bbb;
+}
+
+.grid-item {
+  border: 2px solid #000;
+}
+
+.grid-item:first-child {
+  background: red;
+  grid-column: 1/2;
+}
+
+.aside {
+  background-color: darkslateblue;
+  flex-basis: 200px;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.footer {
+  background-color: violet;
+  flex-grow: 1;
+}
+
+@media screen and (min-width: 700px) {
+  .content {
+    display: grid;
+    grid-template-rows: 60px 1fr 1fr 1fr 1fr 80px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .main {
+    grid-row: 2 / 6;
+    grid-column: 1 / span 2;
+  }
+
+  .aside {
+    grid-row: 2 / 6;
+  }
+  .input {
+    border-radius: 25%;
+  }
+
+  .header {
+    grid-column: 1 / span 3;
+  }
+
+  .footer {
+    padding: 20px;
+    grid-row: 6 / 7;
+    grid-column: 1 / span 3;
+  }
+
+  .footer__ul {
+    padding: 20px;
+  }
+}
+
+.footer__li:hover {
+  color: #ccc;
+}
+
+.footer__responsive-ul {
+  display: none;
+}
+
+.footer__li {
+  display: inline-block;
+  padding: 12px;
+  color: #fff;
+}
+
+.footer__li a {
+  text-decoration: none;
+  color: gray;
+}
+
+.footer__li i {
+  color: gray;
+  width: 30px;
+  box-sizing: border-box;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.footer__li a:hover {
+  color: blue;
+}
+
+.footer__li:hover > a {
+  color: blue;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+    scale: 25%;
+  }
+
+  to {
+    opacity: 1;
+    scale: 100%;
+  }
+}
+
+img {
+  view-timeline-name: --image;
+  view-timeline-axis: block;
+
+  animation-timeline: --image;
+  animation-name: show;
+
+  animation-range: entry 30% cover 50%;
+  animation-fill-mode: both;
+}
+.container {
+  padding-top: 5em;
+  box-sizing: border-box;
+  background-color: aliceblue;
+  align-content: center;
+  justify-content: center;
+}
+.container-sm {
+  padding-top: 5em;
+  box-sizing: border-box;
+  background-color: aliceblue;
+  align-content: center;
+  justify-content: center;
+}
+.container-custom {
+  padding-top: 10em;
+  padding-left: 20em;
+  box-sizing: border-box;
+  background-color: aliceblue;
+  align-content: center;
+  justify-content: center;
+}
+
+.container-login {
+  padding: 10em 10em 5em 43em;
+
+  box-sizing: content-box;
+  width: 25%;
+  align-content: center;
+  justify-content: center;
+}
+
+/* Agregar estilos específicos para la página de detalles de inmuebles */
+.inmueble-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.inmueble-image img {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.inmueble-info {
+  margin-left: 20px;
+}
+
+.inmueble-info h3 {
+  font-size: 24px;
+}
+
+.inmueble-info ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.inmueble-info li {
+  margin-bottom: 10px;
+}
+
+.inmueble-info li strong {
+  font-weight: bold;
+}
+
+/* Agregar estilos adicionales según sea necesario */
+
+#Blog Cards body {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem auto;
+  box-shadow: 0 3px 7px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.6%;
+  background: #fff;
+  line-height: 1.4;
+  font-family: sans-serif;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.blog-card a {
+  color: inherit;
+}
+
+.blog-card a:hover {
+  color: #5ad67d;
+}
+
+.blog-card:hover {
+  .photo {
+    transform: scale(1.3) rotate(3deg);
+  }
+}
+
+.blog-card .meta {
+  position: relative;
+  z-index: 0;
+  height: 200px;
+}
+
+.blog-card .photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.2s;
+}
+
+.blog-card .details,
+.blog-card .details ul {
+  margin: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.blog-card .details {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -100%;
+  margin: auto;
+  transition: left 0.2s;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.blog-card .details a {
+  text-decoration: dotted underline;
+}
+
+.blog-card .details ul li {
+  display: inline-block;
+}
+
+.blog-card .details .author:before {
+  font-family: FontAwesome;
+  margin-right: 10px;
+  content: "\f007";
+}
+
+.blog-card .details .date:before {
+  font-family: FontAwesome;
+  margin-right: 10px;
+  content: "\f133";
+}
+
+.blog-card .details .tags ul:before {
+  font-family: FontAwesome;
+  content: "\f02b";
+  margin-right: 10px;
+}
+
+.blog-card .details .tags li {
+  margin-right: 2px;
+}
+
+.blog-card .details .tags li:first-child {
+  margin-left: -4px;
+}
+
+.blog-card .description {
+  padding: 1rem;
+  background: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.blog-card .description h1,
+.blog-card .description h2 {
+  font-family: Poppins, sans-serif;
+}
+
+.blog-card .description h1 {
+  line-height: 1;
+  margin: 0;
+  font-size: 1.7rem;
+}
+
+.blog-card .description h2 {
+  font-size: 1rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: #a2a2a2;
+  margin-top: 5px;
+}
+
+.blog-card .description .read-more {
+  text-align: right;
+}
+
+.blog-card .description .read-more a {
+  color: #5ad67d;
+  display: inline-block;
+  position: relative;
+}
+
+.blog-card .description .read-more a:after {
+  content: "\f061";
+  font-family: FontAwesome;
+  margin-left: -10px;
+  opacity: 0;
+  vertical-align: middle;
+  transition: margin 0.3s, opacity 0.3s;
+}
+
+.blog-card .description .read-more a:hover:after {
+  margin-left: 5px;
+  opacity: 1;
+}
+
+.blog-card .custom-title {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: right;
+}
+
+.blog-card .custom-title h1 {
+  font-family: Poppins, sans-serif;
+  line-height: 1;
+  margin: 0;
+  font-size: 1.7rem;
+  color: #5ad67d;
+}
+
+.blog-card .custom-title h1:before {
+  content: "\f061";
+  font-family: FontAwesome;
+  margin-right: 5px;
+  opacity: 0;
+  vertical-align: middle;
+  transition: margin 0.3s, opacity 0.3s;
+}
+
+.blog-card .custom-title:hover h1:before {
+  margin-right: 0;
+  opacity: 1;
+}
+
+.blog-card p {
+  position: relative;
+  margin: 1rem 0 0;
+}
+
+.blog-card p:first-of-type {
+  margin-top: 1.25rem;
+}
+
+.blog-card p:first-of-type:before {
+  content: "";
+  position: absolute;
+  height: 5px;
+  background: #5ad67d;
+  width: 35px;
+  top: -0.75rem;
+  border-radius: 3px;
+}
+
+.blog-card:hover .details {
+  left: 0;
+}
+
+@media (min-width: 640px) {
+  .blog-card {
+    flex-direction: row;
+    max-width: 700px;
+  }
+
+  .blog-card .meta {
+    flex-basis: 40%;
+    height: auto;
+  }
+
+  .blog-card .description {
+    flex-basis: 60%;
+  }
+
+  .blog-card .description:before {
+    transform: skewX(-3deg);
+    content: "";
+    background: #fff;
+    width: 30px;
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+
+  .blog-card.alt {
+    flex-direction: row-reverse;
+  }
+
+  .blog-card.alt .description:before {
+    left: inherit;
+    right: -10px;
+    transform: skew(3deg);
+  }
+
+  .blog-card.alt .details {
+    padding-left: 25px;
+  }
+}
+
+#Conteinererror {
+  padding-top: 150px;
+  align-items: center;
+  flex-direction: column;
+}
+
+main {
+  padding-top: 2em;
+  margin-top: 5em;
+}
+.emp-profile {
+  padding: 3%;
+  padding-top: 10em;
+  margin-top: 3%;
+  margin-bottom: 3%;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+.profile-img {
+  text-align: center;
+}
+.profile-img img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+#preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+/*.profile-img .file {
+  position: relative;
+  overflow: hidden;
+  margin-top: -20%;
+  width: 70%;
+  border: none;
+  border-radius: 0;
+  font-size: 15px;
+  background: #212529b8;
+}*/
+.profile-img .file input {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.profile-head h5 {
+  color: #333;
+}
+.profile-head h6 {
+  color: #0062cc;
+}
+.profile-edit-btn {
+  border: none;
+  border-radius: 1.5rem;
+  width: 70%;
+  padding: 2%;
+  font-weight: 600;
+  color: #6c757d;
+  cursor: pointer;
+}
+.proile-rating {
+  font-size: 12px;
+  color: #818182;
+  margin-top: 5%;
+}
+.proile-rating span {
+  color: #495057;
+  font-size: 15px;
+  font-weight: 600;
+}
+.profile-head .nav-tabs {
+  margin-bottom: 5%;
+}
+.profile-head .nav-tabs .nav-link {
+  font-weight: 600;
+  border: none;
+}
+.profile-head .nav-tabs .nav-link.active {
+  border: none;
+  border-bottom: 2px solid #0062cc;
+}
+.profile-work {
+  padding: 14%;
+  margin-top: -15%;
+}
+.profile-work p {
+  font-size: 12px;
+  color: #818182;
+  font-weight: 600;
+  margin-top: 10%;
+}
+.profile-work a {
+  text-decoration: none;
+  color: #495057;
+  font-weight: 600;
+  font-size: 14px;
+}
+.profile-work ul {
+  list-style: none;
+}
+.profile-tab label {
+  font-weight: 600;
+}
+.profile-tab p {
+  font-weight: 600;
+  color: #0062cc;
+}
+
+#hero {
+  height: 90vh;
+  background-image: url("/images/login-cover.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+#Neiboorhood {
+  width: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 20em;
+  border-radius: 23%;
+  filter: drop-shadow(0 0 0.55rem rgb(97, 39, 213));
+}
+
+#Neiboorhood2 {
+  width: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 20em;
+  border-radius: 23%;
+  filter: drop-shadow(0 0 0.55rem rgb(97, 39, 213));
+}
+/* video background */
+#background-video {
+  height: 100vh;
+  width: 100vw;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+/* page content */
+#h1-cover, #h2-cover {
+  color: white;
+  font-family: Trebuchet MS;
+  font-weight: bold;
+  text-align: center;
+}
+
+#h1-cover {
+  font-size: 6rem;
+  margin-top: 30vh; 
+}
+
+#h2-cover { font-size: 3rem; }
+
+@media (max-width: 750px) {
+    #background-video { display: none; }
+    #body-registro-user{
+      background: url("https://assets.codepen.io/6093409/river.jpg") no-repeat;
+      background-size: cover;
+    }
+}
+.im-dt{
+    padding: 1em;
+    margin: 1em;
+    display: inline-block;
+}
+footer{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 70px; 
+    border: 2.5px ridge #d0b084; 
+    border-radius: 0.5rem
+}

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Registrar Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+
+    <link
+      rel="shortcut icon"
+      sizes="76x76"
+      type="image/x-icon"
+      th:href="@{images/logoInmobiliaria2.png}"
+    />
+  </head>
+  <body id="body-registro-user" class="background_img">
+    <!-- This is to display the Navbar of the website. -->
+    <nav th:replace="fragments/navbar :: nav"></nav>
+
+    <!-- End of NavBar -->
+    <video
+      id="background-video"
+      autoplay
+      loop
+      muted
+      poster="https://assets.codepen.io/6093409/river.jpg"
+    >
+      <source
+        src="https://assets.codepen.io/6093409/river.mp4"
+        type="video/mp4"
+      />
+    </video>
+
+    <div class="container" style="border-radius: 1.5rem">
+      <form
+        class="formulario"
+        th:action="@{/usuario/registrar}"
+        method="post"
+        enctype="multipart/form-data"
+        style="border-radius: 1.5rem"
+      >
+        <input type="hidden" id="selectedImagePath" name="selectedImagePath" />
+        <br />
+
+        <div
+          th:if="${error != null}"
+          class="card text-white bg-danger mb-3 mensajeError"
+        >
+          <div class="card-body">
+            <h5 class="card-title">Error ð</h5>
+            <p class="card-text" th:text="${error}"></p>
+          </div>
+        </div>
+        <div
+          th:if="${exito != null}"
+          class="card text-white bg-success mb-3 mt-3 mensajeExito"
+          style="position: fixed; padding: 50% 50% 0 0"
+        >
+          <div class="card-body">
+            <h5 class="card-title">Exito!</h5>
+            <p class="card-text" th:text="${exito}"></p>
+          </div>
+        </div>
+        <br />
+        <h1><span class="badge badge-info">Regístrate</span></h1>
+        <br />
+        <!-- Panel de Selección de Imagen de Perfil -->
+        <!-- Botón para abrir el modal y seleccionar una imagen predefinida -->
+       <div class="form-group">
+  <div class="row">
+        <div class="col-md-4">
+          <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#seleccionImagenModal"
+          style="margin-top: 1.6em"
+        >
+        Elige tu avatar
+        </button>
+            </div>
+
+        <!-- Campo para cargar una imagen -->
+        <div class="col-md-4">
+         <small> <label for="archivo">O una Imagen de Perfil</label>
+          <input
+            type="file"
+            class="form-control-file"
+            id="archivo"
+            name="archivo"
+            onchange="imagenCargada()"
+          /></small>
+        </div>
+
+        <!-- Contenedor para la vista previa de la imagen -->
+        <div class="col-md-4">
+        <div id="imagenPreviewContainer" style="margin-top: 10px">
+          <img
+            id="imagenPreview"
+            src="#"
+            alt="Imagen de Perfil"
+            style="max-width: 200px; max-height: 200px; display: none; border-radius: 50%; padding-bottom: 2em"
+          />
+        </div>
+        </div>
+        </div>
+           </div>
+        <div
+          class="modal fade"
+          id="seleccionImagenModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="seleccionImagenModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="seleccionImagenModalLabel">
+                  Selecciona una Imagen de Perfil
+                </h5>
+
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div
+                    th:each="imagePath : ${imagenesPreCargadas}"
+                    class="col-md-4"
+                  >
+                    <img
+                      th:src="${imagePath}"
+                      alt="Imagen de Perfil"
+                      class="img-thumbnail"
+                      onclick="setSelectedImage(this.src); $('#seleccionImagenModal').modal('hide');"
+                      style="
+                        cursor: pointer;
+                        max-width: 100%;
+                        max-height: 200px;
+                        object-fit: cover;
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row align-items-center">
+          <div class="col-auto my-1">
+            <label class="mr-sm-2 sr-only" for="tipoPersonaValidacion"
+              >Preference</label
+            >
+            <select
+              name="tipoPersona"
+              class="custom-select mr-sm-2"
+              id="tipoPersonaValidacion"
+              th:value="${tipoPersona}"
+              onchange="toggleFields(this.value);"
+              required
+            >
+              <option selected>Tipo Persona...</option>
+              <option value="1">Persona Humana</option>
+              <option value="2">Persona Jurídica</option>
+            </select>
+          </div>
+        </div>
+        <br />
+        <div class="row" id="nombre">
+          <div class="form-group col-md-7">
+            <label class="col-form-label">Nombre</label>
+            <input
+              name="nombre"
+              type="text"
+              class="form-control"
+              placeholder="Ingrese su nombre"
+              th:value="${nombre}"
+            />
+          </div>
+          <div class="form-group col-md-5" id="apellido">
+            <label class="col-form-label">Apellido</label>
+            <input
+              name="apellido"
+              type="text"
+              class="form-control"
+              placeholder="Ingrese su apellido"
+              th:value="${apellido}"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="form-group col-md-7"
+            id="denominacionSocial"
+            style="display: none"
+          >
+            <label class="col-form-label">Denominación Social</label>
+            <input
+              name="nombre"
+              type="text"
+              class="form-control"
+              placeholder="Denominación Social"
+              th:value="${nombre}"
+            />
+          </div>
+        </div>
+        <div class="row form-group col-md-12">
+          <label class="col-form-label" for="exampleFormControlInput1"
+            >Dirección</label
+          >
+          <input
+            name="direccion"
+            type="address"
+            class="form-control"
+            id="exampleFormControlInput1"
+            placeholder="Av. Siempre Viva 2223"
+            th:value="${direccion}"
+            required
+          />
+        </div>
+
+        <div class="form-row">
+          <label class="col-form-label">Provincia</label>
+          <select
+            class="custom-select mr-sm-2"
+            name="provincia"
+            id="selectProvincias"
+            required
+          >
+            <option value="Elige una provincia">Elige una provincia</option>
+          </select>
+          <span></span>
+
+          <label class="col-form-label">Ciudad</label>
+          <select
+            name="ciudad"
+            class="custom-select mr-sm-2"
+            id="selectMunicipios"
+            required
+          >
+            <option value="Elige un municipio">Elige un municipio</option>
+          </select>
+          <span></span>
+
+          <br />
+          <div class="form-group col-md-7" id="DNI">
+            <label class="col-form-label" for="formGroupExampleInput"
+              >Ingrese su DNI</label
+            >
+            <input
+              name="DNI"
+              type="number"
+              class="form-control"
+              th:value="${DNI}"
+              placeholder="Sin puntos y sin espacios en blanco."
+            />
+          </div>
+          <br />
+          <div class="form-row align-items-center" id="sexo">
+            <div class="col-auto my-1" style="padding-top: 1.5em">
+              <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"
+                >Preference</label
+              >
+              <select
+                name="sexo"
+                class="custom-select mr-sm-2"
+                th:value="${sexo}"
+              >
+                <option selected>Sexo...</option>
+                <option value="1">Femenino</option>
+                <option value="2">Masculino</option>
+                <option value="3">Otro</option>
+              </select>
+            </div>
+          </div>
+          <br />
+
+          <br />
+          <div class="form-group col-md-7">
+            <label class="col-form-label" for="formGroupExampleInput2"
+              >Ingrese su Código Tributario</label
+            >
+            <input
+              name="idCodigoTributario"
+              type="number"
+              class="form-control"
+              id="formGroupExampleInput2"
+              th:value="${idCodigoTributario}"
+              placeholder="Sin puntos, sin guiones y sin espacios en blanco."
+              required
+            />
+          </div>
+          <br />
+          <div class="form-row align-items-center">
+            <div class="col-auto my-1" style="padding-top: 1.5em">
+              <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"
+                >Preference</label
+              >
+              <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                <option selected>Tipo ID...</option>
+                <option value="1">C.U.I.L.</option>
+                <option value="2">C.U.I.T.</option>
+              </select>
+            </div>
+          </div>
+          <br />
+          <div class="form-group col-md-6">
+            <label class="col-form-label" for="formGroupExampleInput"
+              >Ingrese su número de celular</label
+            >
+            <input
+              name="celular"
+              type="number"
+              class="form-control"
+              id="formGroupExampleInput"
+              placeholder="+## ## #### ####"
+              th:value="${celular}"
+              required
+            />
+          </div>
+          <br />
+
+          <div class="form-group col-md-6">
+            <label class="col-form-label" for="InputEmail1"
+              >Dirección de correo electrónico</label
+            >
+            <input
+              name="email"
+              type="String"
+              class="form-control"
+              id="InputEmail1"
+              required
+            />
+            <small id="emailHelp" class="form-text text-muted"
+              >Nunca compartiremos con nadie su datos personales.</small
+            >
+          </div>
+          <br />
+          <div class="form-group col-md-6">
+            <!-- Contraseña -->
+            <label class="col-form-label" for="InputPassword1"
+              >Ingrese su Contraseña</label
+            >
+            <input
+              name="contrasenia"
+              type="password"
+              class="form-control"
+              id="InputPassword1"
+              required
+            />
+          </div>
+          <br />
+          <div class="form-group col-md-6">
+            <!-- Repetición de la Contraseña -->
+            <label class="col-form-label" for="InputPassword2"
+              >Repita su Contraseña</label
+            >
+            <input
+              name="contrasenia2"
+              type="password"
+              class="form-control"
+              id="InputPassword2"
+              required
+            />
+          </div>
+          <br />
+          <div class="form-group col-md-7 form-check" style="padding-left: 3em">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="exampleCheck1"
+            />
+            <label class="form-check-label" for="exampleCheck1"
+              ><small id="emailHelp" class="form-text text-muted"
+                >Recuérdame en este dispositivo</small
+              ></label
+            >
+          </div>
+          <br />
+          <button type="submit" class="btn btn-info col-md-7" style="margin-left: 2em">
+            Enviar Formulario
+          </button>
+          <div style="padding-left: 11em" class="divVolver">
+            <a
+              th:href="@{/}"
+              class="btn btn-dark my-2 boton Volver botones"
+              >Volver</a
+            >
+          </div>
+        </div>
+        <br />
+        <br />
+      </form>
+    </div>
+    <br />
+
+    <script>
+      function toggleFields(selectedValue) {
+        const nombre = document.getElementById("nombre");
+        const apellido = document.getElementById("apellido");
+        const DNI = document.getElementById("DNI");
+        const sexo = document.getElementById("sexo");
+        const denominacionSocial =
+          document.getElementById("denominacionSocial");
+
+        if (selectedValue === "2") {
+          // Si selecciona "Persona Jurídica"
+          nombre.style.display = "none";
+          apellido.style.display = "none";
+          DNI.style.display = "none";
+          sexo.style.display = "none";
+          denominacionSocial.style.display = "";
+        } else {
+          nombre.style.display = "";
+          apellido.style.display = "";
+          DNI.style.display = "";
+          sexo.style.display = "";
+          denominacionSocial.style.display = "none";
+        }
+      }
+
+      const $d = document;
+      const $selectProvincias = $d.getElementById("selectProvincias");
+      const $selectMunicipios = $d.getElementById("selectMunicipios");
+      const $selectLocalidades = $d.getElementById("selectLocalidades");
+
+      function provincia() {
+        fetch("https://apis.datos.gob.ar/georef/api/provincias")
+          .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+          .then((json) => {
+            let $options = `<option value="Elige una provincia">Elige una provincia</option>`;
+
+            json.provincias.forEach(
+              (el) =>
+                ($options += `<option value="${el.nombre}">${el.nombre}</option>`)
+            );
+
+            $selectProvincias.innerHTML = $options;
+          })
+          .catch((error) => {
+            let message = error.statusText || "Ocurrió un error";
+
+            $selectProvincias.nextElementSibling.innerHTML = `Error: ${error.status}: ${message}`;
+          });
+      }
+
+      $d.addEventListener("DOMContentLoaded", provincia);
+
+      function municipio(provincia) {
+        fetch(
+          `https://apis.datos.gob.ar/georef/api/municipios?provincia=${provincia}&max=100`
+        )
+          .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+          .then((json) => {
+            let $options = `<option value="Elige un municipio">Elige un municipio</option>`;
+
+            json.municipios.forEach(
+              (el) =>
+                ($options += `<option value="${el.id}">${el.nombre}</option>`)
+            );
+
+            $selectMunicipios.innerHTML = $options;
+          })
+          .catch((error) => {
+            let message = error.statusText || "Ocurrió un error";
+
+            $selectMunicipios.nextElementSibling.innerHTML = `Error: ${error.status}: ${message}`;
+          });
+      }
+
+      $selectProvincias.addEventListener("change", (e) => {
+        municipio(e.target.value);
+        console.log(e.target.value);
+      });
+
+      function validarForm() {
+        "use strict";
+
+        var forms = document.querySelectorAll(".needs-validation");
+
+        Array.prototype.slice.call(forms).forEach(function (form) {
+          form.addEventListener(
+            "submit",
+            function (event) {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      }
+    </script>
+    <script>
+      function setSelectedImage(imagePath) {
+        document.getElementById("selectedImagePath").value = imagePath;
+        document.getElementById("archivo").value = "";
+        document.getElementById("imagenPreview").src = imagePath;
+        document.getElementById("imagenPreview").style.display = "block";
+        $("#seleccionImagenModal").modal("hide");
+      }
+
+      function imagenCargada() {
+        var archivoInput = document.getElementById("archivo");
+        if (archivoInput.files && archivoInput.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("imagenPreview").src = e.target.result;
+            document.getElementById("imagenPreview").style.display = "block";
+          };
+          reader.readAsDataURL(archivoInput.files[0]);
+        }
+        document.getElementById("selectedImagePath").value = "";
+      }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

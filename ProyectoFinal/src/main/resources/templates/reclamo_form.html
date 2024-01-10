@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Reclamo</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" th:href="@{/css/formulario.css}" />
+
+    <link
+      rel="shortcut icon"
+      sizes="76x76"
+      type="image/x-icon"
+      th:href="@{images/logoInmobiliaria2.png}"
+    />
+  </head>
+
+  <body>
+    <nav th:replace="fragments/navbar :: nav"></nav>
+
+    <div class="align-center">
+      <h1>Formulario de Reclamo</h1>
+    </div>
+    <form
+      class="form-register"
+      th:action="@{/reclamo/reclamar/__${cuentaTributaria}__}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input
+        hidden
+        th:value="${inmueble.cuentaTributaria}"
+        name="cuentaTributaria"
+      />
+      <input hidden th:value="${usuario.idCodigoTributario}" name="idUsuario" />
+
+      <div style="margin-top: 8px">
+        <div class="form-group col-md-8">
+          <label class="col-form-label" for="formGroupExampleInput"
+            >Ingrese fecha de su Reclamo</label
+          >
+          <input
+            class="controls"
+            type="date"
+            id="fechaReclamo"
+            name="fechaReclamo"
+            placeholder="Fecha del Reclamo"
+          />
+        </div>
+      </div>
+      <br />
+
+      <br />
+      <br />
+
+      <div>
+        <label class="col-form-label" for="formGroupExampleInput"
+          >Ingrese su Reclamo</label
+        >
+        <textarea
+          class="controls"
+          id="reclamoDescrip"
+          name="reclamoDescrip"
+          rows="10"
+          cols="150"
+          placeholder="Escriba su Reclamo"
+        ></textarea>
+      </div>
+
+      <br />
+
+      <button type="submit">Enviar</button>
+    </form>
+    <br>
+        <hr>
+    <div th:replace="fragments/footer :: footer"></div>
+  </body>
+</html>

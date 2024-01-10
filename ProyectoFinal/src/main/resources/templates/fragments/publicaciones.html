@@ -1,0 +1,197 @@
+<div th:fragment="publicaciones" xmlns:th="http://www.thymeleaf.org">
+  <div class="container-index" style="padding: 5px">
+    <!-- Bootstrap's grid system is built with flexbox and allows up to 12 columns across the page. A grid row is divided into 12 parts. -->
+
+    <!-- The grid system is responsive, and the columns will re-arrange automatically depending on the screen size.
+
+    Make sure that the sum adds up to 12 or fewer. -->
+
+    <!-- The Bootstrap 4 grid system has five classes: -->
+
+    <!-- .col- (extra small devices - screen width less than 576px)
+
+        .col-sm- (small devices - screen width equal to or greater than 576px)
+
+        .col-md- (medium devices - screen width equal to or greater than 768px)
+
+        .col-lg- (large devices - screen width equal to or greater than 992px)
+
+        .col-xl- (xlarge devices - screen width equal to or greater than 1200px)
+
+        The classes above can be combined to create more dynamic and flexible layouts. -->
+
+    <div class="blog-card" th:each="inmueble : ${inmuebles}">
+      <a
+        th:href="@{/inmueble/detalle/{cuentaTributaria}/principal(cuentaTributaria=${inmueble.cuentaTributaria})}"
+      >
+        <div class="meta">
+          <div
+            class="photo"
+            th:style="'background-image: url(\'' + '/imagen/inmueble/' + ${inmueble.cuentaTributaria} + '/principal' + '\')'"
+          ></div>
+          <ul class="details">
+            <li class="author">
+              <a
+                th:text="${inmueble.usuarioAdministrador.nombre} + ' ' + ${inmueble.usuarioAdministrador.apellido}"
+              ></a>
+            </li>
+            <li class="date">Aug. 24, 2015</li>
+            <li class="tags">
+              <ul>
+                <li>
+                  <span
+                    th:text="${'Habitaciones: ' + inmueble.cantidadHabitaciones}"
+                  ></span>
+                </li>
+                <li><span th:text="${'Baños: ' + inmueble.banios}"></span></li>
+                <li>
+                  <span
+                    th:text="${'Ambientes: ' + inmueble.cantidadAmbientes}"
+                  ></span>
+                </li>
+                <li><span th:text="${'Superficie Total: ' + inmueble.superficieTotal}"></span></li>
+                <li><span th:text="${'Superficie Cubierta: ' + inmueble.superficieCubierta}"></span></li>
+              </ul>
+            </li>
+          </ul></div
+      ></a>
+      <a
+        th:href="@{/inmueble/detalle/{cuentaTributaria}(cuentaTributaria=${inmueble.cuentaTributaria})}"
+      >
+        <div class="description">
+          <h1 th:text="${inmueble.tituloAnuncio}"></h1>
+          <h2 th:text="${inmueble.direccion}" +></h2>
+          <p th:text="${inmueble.descripcionAnuncio}"></p>
+
+          <h1 class="custom-title">
+            <span th:text="${inmueble.precio}"></span>
+            <span
+              th:text="${inmueble.moneda == 'dolar' ? 'USD' : 'ARS'}"
+            ></span>
+          </h1>
+          <p class="read-more">
+            <a
+              th:href="@{/inmueble/detalle/{cuentaTributaria}(cuentaTributaria=${inmueble.cuentaTributaria})}"
+              >Leer más</a
+            >
+          </p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Reviews and Feedbacks which displays star ratings -->
+
+    <!--Estrellas-->
+    <!-- Estrellas, "Ya decidiste cual te gusta mas", y boton de Agrega Fechas comentados
+    <div class="container" style="padding: 5px">
+      <div class="row">
+        <div class="col-md-4">
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        </div>
+        <div class="col-md-4">
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        </div>
+        <div class="col-md-4">
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        </div>
+      </div>
+    </div>
+
+     Reviews and Feedbacks which uses Bootstrap Grid property, includes text -->
+
+    <!-- <div class="container" style="padding: 3px; font-size: 14px; font-family: Helvetica;">
+    <div class="row">
+        <div class="col-md-4">
+            <p>Belén y Marcos son unos excelentes anfitriones. Ellos estaban en otro país pero en todo momento estaban atentos a que nuestras necesidades estén cubiertas.
+                Desde el...</p>
+        </div>
+        <div class="col-md-4">
+            <p>No tenía idea que tenía familiares en pinamar, y es asi como me hicieron sentir Sandra y Gustavo,su hospitalidad y generosidad son...</p>
+        </div>
+        <div class="col-md-4">
+            <p>Mi nombre es Pamela. Estuve con mi novio en Villa Isidro durante poco mas que un fin de semana y quedé sor...</p>
+        </div>
+    </div>
+</div>
+
+ Reviews and Feedbacks of data about a particular user
+
+<div class="container" style="margin-bottom: 10px;">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="http://www.marketingtool.online/en/face-generator/img/faces/avatar-11b933b8d4c4f1fb1a1320af2daa4b35.jpg" height="48" width="48" style="border-radius: 50%;">
+                </div>
+                <div class="col-md-10">
+                    <p style="font-weight: bold; font-family: Helvetica; margin: 0;">Omar</p>
+                    <p>Argentina</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="http://www.marketingtool.online/en/face-generator/img/faces/avatar-11b35e0f40f3ce8e7051c302d0d312b8.jpg" height="48" width="48" style="border-radius: 50%;">
+                </div>
+                <div class="col-md-10">
+                    <p style="font-weight: bold; font-family: Helvetica; margin: 0;">Nicolas</p>
+                    <p>Uruguay</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="https://boredhumans.com/faces2/33.jpg" height="48" width="48" style="border-radius: 50%;">
+                </div>
+                <div class="col-md-10">
+                    <p style="font-weight: bold; font-family: Helvetica; margin: 0;">Rodri</p>
+                    <p>Palermo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="container" style="margin-bottom: 50px; color: #484848">
+      <div class="row">
+        <div class="col-md-10">
+          <h3 style="margin-top: 50px">Ya decidiste cual te gusta más?</h3>
+          <p>
+            Coordina una entrevista con un representante para reservar tu
+            propiedad!
+          </p>
+        </div>
+        <div class="col-md-2">
+          <button
+            type="button"
+            class="btn btn-outline-primary rounded nohover"
+            style="
+              margin: 50px;
+              padding: 10px;
+              padding-left: 20px;
+              padding-right: 20px;
+              border: 2px solid;
+            "
+          >
+            <strong>Agrega Fechas</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+    -->
+  </div>
+</div>

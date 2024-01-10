@@ -1,0 +1,145 @@
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head th:replace="/fragments/head :: head">
+  </head>
+
+  <body>
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <br />
+    <div class="container-sm">
+
+      <!-- Agrega estos botones antes de la tabla -->
+
+      <!-- Tabla -->
+
+        <table class="table table-dark table table-hover">
+          <!-- Agrega estos enlaces para los botones de ordenamiento antes de la fila de encabezados -->
+          <div class="btn-group" role="group" aria-label="Ordenar por">
+            <a th:href="@{/inmueble/lista?orden=precioAsc}" class="btn btn-secondary">Precio ascendente</a>
+            <a th:href="@{/inmueble/lista?orden=precioDesc}" class="btn btn-secondary">Precio descendente</a>
+            <a th:href="@{/inmueble/lista?orden=transaccionAsc}" class="btn btn-secondary">Transacción ascendente</a>
+            <a th:href="@{/inmueble/lista?orden=transaccionDesc}" class="btn btn-secondary">Transacción descendente</a>
+            <a th:href="@{/inmueble/lista?orden=estadoAsc}" class="btn btn-secondary">Estado ascendente</a>
+            <a th:href="@{/inmueble/lista?orden=estadoDesc}" class="btn btn-secondary">Estado descendente</a>
+            <a th:href="@{/inmueble/lista?orden=altaAsc}" class="btn btn-secondary">Alta ascendente</a>
+            <a th:href="@{/inmueble/lista?orden=altaDesc}" class="btn btn-secondary">Alta descendente</a>
+          </div>
+
+          <!-- Encabezados de la tabla -->
+          <thead>
+          <tr>
+            <th scope="col">Cuenta Tributaria</th>
+            <th scope="col">Imagen</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Ciudad</th>
+            <th scope="col">Provincia</th>
+            <th scope="col">Transacción</th>
+            <th scope="col">Título de Anuncio</th>
+            <th scope="col">Descripción de Anuncio</th>
+            <th scope="col">Precio Alquiler/Venta</th>
+            <th scope="col">Horarios</th>
+            <th scope="col">Estado</th>
+            <th scope="col" sec:authorize="hasRole('ADMIN')">Alta</th>
+            <th scope="col" sec:authorize="hasRole('ADMIN')">Acciones</th>
+          </tr>
+          </thead>
+        <tbody th:each="inmueble, iterStat : ${inmuebles}">
+          <tr>
+            <td th:text="${inmueble.cuentaTributaria}"></td>
+            <td>
+              <img
+                th:src="@{/imagen/inmueble/__${inmueble.cuentaTributaria}__/principal}"
+                alt=""
+                height = 200;
+                width = 200;
+              />
+            </td>
+            <td th:text="${inmueble.direccion}"></td>
+            <td th:text="${inmueble.ciudad}"></td>
+            <td th:text="${inmueble.provincia}"></td>
+            <td th:text="${inmueble.transaccion}"></td>
+            <td th:text="${inmueble.tituloAnuncio}"></td>
+            <td th:text="${inmueble.descripcionAnuncio}"></td>
+            <td th:text="${inmueble.precio}"></td>
+            <td>
+              <span
+                th:if="${iterStat.index >= 0 && iterStat.index < inmueble.rangosHorarios.size()}"
+              >
+                <span
+                  th:text="${inmueble.rangosHorarios[iterStat.index].diaSemana}"
+                ></span>
+                <span th:text="' '"></span>
+                <!-- Agrega un espacio entre las variables -->
+                <span
+                  th:text="${inmueble.rangosHorarios[iterStat.index].horaInicio}"
+                ></span>
+                <span th:text="' - '"></span>
+                <!-- Agrega un guion entre las variables -->
+                <span
+                  th:text="${inmueble.rangosHorarios[iterStat.index].horaFin}"
+                ></span>
+              </span>
+            </td>
+            <td th:text="${inmueble.estado}"></td>
+            <td
+              sec:authorize="hasRole('ADMIN')"
+              th:text="${inmueble.alta}"
+            ></td>
+            <td>
+              <a
+                th:href="@{/inmueble/detalle/{cuentaTributaria}(cuentaTributaria=${inmueble.cuentaTributaria})}"
+                >Ver Detalles</a
+              >
+            </td>
+            <td>
+              <a
+                th:href="@{/inmueble/modificar/__${inmueble.cuentaTributaria}__}"
+                ><i class="fas fa-edit"></i> Editar</a
+              >
+            </td>
+            <td sec:authorize="hasRole('ADMIN')">
+              <a
+                th:href="@{/inmueble/eliminar/__${inmueble.cuentaTributaria}__}"
+                ><i class="fas fa-edit"></i> Eliminar</a
+              >
+            </td>
+            <td sec:authorize="hasRole('ADMIN')">
+              <div th:if="${inmueble.alta}">
+                <a
+                  th:href="@{/inmueble/dar-baja/__${inmueble.cuentaTributaria}__}"
+                  ><i class="fas fa-edit"></i> Dar de Baja</a
+                >
+              </div>
+              <div th:unless="${inmueble.alta}">
+                <a
+                  th:href="@{/inmueble/dar-alta/__${inmueble.cuentaTributaria}__}"
+                  ><i class="fas fa-edit"></i> Dar de Alta</a
+                >
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+<br>
+        <hr>
+    <div th:replace="fragments/footer :: footer"></div>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

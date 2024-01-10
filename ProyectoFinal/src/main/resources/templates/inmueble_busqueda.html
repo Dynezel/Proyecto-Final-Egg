@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+  <body class="background_img">
+    <!-- This is to display the Navbar of the website. -->
+    <nav th:replace="fragments/navbar :: nav"></nav>
+    <!-- End of NavBar -->
+    <br />
+    <br />
+    <div
+      class="container mt-5 rounded mx-auto"
+      style="
+        max-width: 650px;
+        background-color: white;
+        font-family: Helvetica;
+        font-weight: 600;
+        color: #484848;
+      "
+    >
+      <h1 style="font-size: 2em; font-weight: bold; margin-bottom: 15px">
+        Resultados de la búsqueda
+      </h1>
+
+      <div class="form-group" style="font-size: small">
+        <label>Filtros de búsqueda:</label>
+      </div>
+    </div>
+    <!-- Container for Search Results -->
+    <div>
+      <div class="blog-card" th:each="inmueble : ${inmuebles}">
+        <a
+          th:href="@{/inmueble/detalle/{cuentaTributaria}/principal(cuentaTributaria=${inmueble.cuentaTributaria})}"
+        >
+          <div class="meta">
+            <div
+              class="photo"
+              th:style="'background-image: url(\'' + '/imagen/inmueble/' + ${inmueble.cuentaTributaria} + '/principal' + '\')'"
+            ></div>
+            <ul class="details">
+              <li class="author">
+                <a
+                  th:text="${inmueble.usuarioAdministrador.nombre} + ' ' + ${inmueble.usuarioAdministrador.apellido}"
+                ></a>
+              </li>
+              <li class="date">Aug. 24, 2015</li>
+              <li class="tags">
+                <ul>
+                  <li>
+                    <span
+                      th:text="${'Habitaciones: ' + inmueble.cantidadHabitaciones}"
+                    ></span>
+                  </li>
+                  <li>
+                    <span th:text="${'Baños: ' + inmueble.banios}"></span>
+                  </li>
+                  <li>
+                    <span
+                      th:text="${'Ambientes: ' + inmueble.cantidadAmbientes}"
+                    ></span>
+                  </li>
+                  <li>
+                    <span th:text="${'Superficie Total(m²): ' + inmueble.superficieTotal}"></span>
+                  </li>
+                  <li><span th:text="${'Superficie Cubierta(m²): ' + inmueble.superficieCubierta}"></span></li>
+                </ul>
+              </li>
+            </ul></div
+        ></a>
+        <a
+          th:href="@{/inmueble/detalle/{cuentaTributaria}(cuentaTributaria=${inmueble.cuentaTributaria})}"
+        >
+          <div class="description">
+            <h1 th:text="${inmueble.tituloAnuncio}"></h1>
+            <h2 th:text="${inmueble.direccion}" +></h2>
+            <p th:text="${inmueble.descripcionAnuncio}"></p>
+            <h1 class="custom-title">
+              <span th:text="${inmueble.precio}"></span>
+              <span
+                th:text="${inmueble.moneda == 'dolar' ? 'USD' : 'ARS'}"
+              ></span>
+            </h1>
+            <p class="read-more">
+              <a
+                th:href="@{/inmueble/detalle/{cuentaTributaria}(cuentaTributaria=${inmueble.cuentaTributaria})}"
+                >Leer más</a
+              >
+            </p>
+          </div>
+        </a>
+      </div>
+      <!-- Repeat the above structure for each inmueble -->
+    </div>
+
+    <!-- End of Search Results -->
+
+    <!-- The below section displays the Reviews and Feedbacks given by the users. -->
+    <div
+      class="container mt-5 mx-auto"
+      style="
+        padding: 2px;
+        font-size: 14px;
+        font-family: Helvetica;
+        position: relative;
+      "
+    >
+      <h3>Reseñas de los usuarios</h3>
+      <!-- Include user reviews and ratings here -->
+    </div>
+
+    <hr />
+
+    <!-- Footer Section -->
+    <div th:replace="fragments/footer :: footer"></div>
+  </body>
+</html>

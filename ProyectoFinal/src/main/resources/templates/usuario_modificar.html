@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Actualizar Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+
+    <link
+      rel="shortcut icon"
+      sizes="76x76"
+      type="image/x-icon"
+      th:href="@{images/logoInmobiliaria2.png}"
+    />
+  </head>
+  <body id="body-registro-user" class="background_img">
+    <!-- This is to display the Navbar of the website. -->
+    <nav th:replace="fragments/navbar :: nav"></nav>
+
+    <!-- End of NavBar -->
+
+    <div class="container">
+      <br />
+
+      <form
+        class="formulario"
+        th:action="@{/usuario/modificar/__${session.usuariosession.idCodigoTributario}__}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <input
+          hidden
+          name="idCodigoTributario"
+          th:value="${idCodigoTributario}"
+        />
+        <br />
+
+        <div
+          th:if="${error != null}"
+          class="card text-white bg-danger mb-3 mensajeError"
+        >
+          <div class="card-body">
+            <h5 class="card-title">Error ð</h5>
+            <p class="card-text" th:text="${error}"></p>
+          </div>
+        </div>
+        <div
+          th:if="${exito != null}"
+          class="card text-white bg-success mb-3 mt-3 mensajeExito"
+        >
+          <div class="card-body">
+            <h5 class="card-title">Exito!</h5>
+            <p class="card-text" th:text="${exito}"></p>
+          </div>
+        </div>
+        <br />
+        <h1><span class="badge badge-primary">Actualiza tu Perfil</span></h1>
+        <br />
+
+        <!-- Panel de Selección de Imagen de Perfil -->
+        <!-- Botón para abrir el modal y seleccionar una imagen predefinida -->
+<!--        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#seleccionImagenModal"
+        >
+          Seleccionar Imagen de Perfil
+        </button>-->
+
+        <!-- Campo para cargar una imagen -->
+        <div class="form-group">
+          <label for="archivo">Cargar Imagen de Perfil</label>
+          <input
+            type="file"
+            class="form-control-file"
+            id="archivo"
+            name="archivo"
+            onchange="imagenCargada()"
+          />
+        </div>
+
+        <!-- Contenedor para la vista previa de la imagen -->
+        <div id="imagenPreviewContainer" style="margin-top: 10px">
+          <img
+            id="imagenPreview"
+            src="#"
+            alt="Imagen de Perfil"
+            style="max-width: 200px; max-height: 200px; display: none; border-radius:50%;"
+          />
+        </div>
+
+        <div
+          class="modal fade"
+          id="seleccionImagenModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="seleccionImagenModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="seleccionImagenModalLabel">
+                  Selecciona una Imagen de Perfil
+                </h5>
+
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div
+                    th:each="imagePath : ${imagenesPreCargadas}"
+                    class="col-md-4"
+                  >
+                    <img
+                      th:src="${imagePath}"
+                      alt="Imagen de Perfil"
+                      class="img-thumbnail"
+                      onclick="setSelectedImage(this.src); $('#seleccionImagenModal').modal('hide');"
+                      style="
+                        cursor: pointer;
+                        max-width: 100%;
+                        max-height: 200px;
+                        object-fit: cover;
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row align-items-center">
+          <div class="col-auto my-1">
+            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"
+              >Preference</label
+            >
+            <select
+              name="tipoPersona"
+              class="custom-select mr-sm-2"
+              id="inlineFormCustomSelect"
+              th:field="${usuario.tipoPersona}"
+              required
+            >
+              <option value="" selected disabled hidden>Tipo Persona...</option>
+              <option value="1">Persona Humana</option>
+              <option value="2">Persona Jurídica</option>
+            </select>
+          </div>
+        </div>
+        <br />
+        <div class="form-group col-md-12">
+          <div class="form-group col-md-6">
+            <label class="col-form-label" for="exampleFormControlInput1"
+              >Dirección</label
+            >
+            <input
+              name="direccion"
+              type="address"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder="Av. Siempre Viva 2223"
+              th:value="${usuario.direccion}"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <label class="col-form-label">Provincia</label>
+            <select
+              class="custom-select mr-sm-2"
+              name="provincia"
+              id="selectProvincias"
+              th:value="${usuario.provincia}"
+              th:text="${usuario.provincia}"
+              required
+            >
+              <option value="Elige una provincia" selected disabled hidden>
+                Elige una provincia
+              </option>
+            </select>
+
+            <label class="col-form-label">Ciudad</label>
+            <select
+              name="ciudad"
+              class="custom-select mr-sm-2"
+              id="selectMunicipios"
+              required
+            >
+              <option value="Elige un municipio" selected disabled hidden>
+                Elige un municipio
+              </option>
+            </select>
+          </div>
+          <div class="form-row align-items-center" id="sexo">
+            <div class="col-auto my-1" style="padding-top: 1.5em">
+              <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"
+                >Preference</label
+              >
+              <select
+                name="sexo"
+                class="custom-select mr-sm-2"
+                th:value="${usuario.sexo}"
+              >
+                <option selected>Sexo...</option>
+                <option value="1">Femenino</option>
+                <option value="2">Masculino</option>
+                <option value="3">Otro</option>
+              </select>
+            </div>
+          </div>
+          <br />
+          <br />
+          <div class="form-group col-md-6">
+            <label class="col-form-label" for="formGroupExampleInput"
+              >Ingrese su número de celular</label
+            >
+            <input
+              name="celular"
+              type="text"
+              class="form-control"
+              id="formGroupExampleInput"
+              placeholder="+54 11 1111 1111"
+              th:value="${usuario.celular}"
+              required
+            />
+          </div>
+          <br />
+
+          <div class="form-group col-md-6">
+            <label class="col-form-label" for="exampleInputEmail1"
+              >Dirección de correo electrónico</label
+            >
+            <input
+              name="email"
+              type="String"
+              class="form-control"
+              id="InputEmail1"
+              th:value="${usuario.email}"
+              required
+            />
+            <small id="emailHelp" class="form-text text-muted"
+              >Nunca compartiremos con nadie su datos personales.</small
+            >
+          </div>
+          <div class="form-group col-md-5">
+            <label class="col-form-label" for="inputState"
+              >Mi Rol como usuario:</label
+            >
+            <br />
+            <select
+              class="custom-select mr-sm-2"
+              name="Rol"
+              id="Rol"
+              th:field="${usuario.Rol}"
+              required
+            >
+              <option value="CLIENTE">
+                Quiero Comprar o Alquilar Propiedades
+              </option>
+              <option value="ENTE">Quiero Vender o Alquilar Propiedades</option>
+              <option sec:authorize="hasAnyRole('ADMIN')" value="ADMIN">
+                ADMIN
+              </option>
+              <option disabled="true" selected="true" value="">
+                Seleccionar un Rol
+              </option>
+            </select>
+          </div>
+          <br />
+          <br />
+          <button type="submit" class="btn btn-primary col-md-7">
+            Actualizar Datos
+          </button>
+          <a
+            type="button"
+            class="btn btn-dark"
+            style="margin-left: 15em"
+            th:href="@{/usuario/eliminar/__${usuario.idCodigoTributario}__}"
+            >Eliminar mi cuenta</a
+          >
+        </div>
+        <br />
+        <br />
+      </form>
+    </div>
+
+    <br />
+    <hr />
+    <div th:replace="fragments/footer :: footer"></div>
+    <script>
+      const $d = document;
+      const $selectProvincias = $d.getElementById("selectProvincias");
+      const $selectMunicipios = $d.getElementById("selectMunicipios");
+
+      function provincia() {
+        fetch("https://apis.datos.gob.ar/georef/api/provincias")
+          .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+          .then((json) => {
+            let $options = `<option value="Elige una provincia">Elige una provincia</option>`;
+
+            json.provincias.forEach(
+              (el) =>
+                ($options += `<option value="${el.nombre}">${el.nombre}</option>`)
+            );
+
+            $selectProvincias.innerHTML = $options;
+          })
+          .catch((error) => {
+            let message = error.statusText || "Ocurrió un error";
+
+            $selectProvincias.nextElementSibling.innerHTML = `Error: ${error.status}: ${message}`;
+          });
+      }
+
+      $d.addEventListener("DOMContentLoaded", provincia);
+
+      function municipio(provincia) {
+        fetch(
+          `https://apis.datos.gob.ar/georef/api/municipios?provincia=${provincia}&max=100`
+        )
+          .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+          .then((json) => {
+            let $options = `<option value="Elige un municipio">Elige un municipio</option>`;
+
+            json.municipios.forEach(
+              (el) =>
+                ($options += `<option value="${el.id}">${el.nombre}</option>`)
+            );
+
+            $selectMunicipios.innerHTML = $options;
+          })
+          .catch((error) => {
+            let message = error.statusText || "Ocurrió un error";
+
+            $selectMunicipios.nextElementSibling.innerHTML = `Error: ${error.status}: ${message}`;
+          });
+      }
+
+      $selectProvincias.addEventListener("change", (e) => {
+        municipio(e.target.value);
+        console.log(e.target.value);
+      });
+
+      function validarForm() {
+        "use strict";
+
+        var forms = document.querySelectorAll(".needs-validation");
+
+        Array.prototype.slice.call(forms).forEach(function (form) {
+          form.addEventListener(
+            "submit",
+            function (event) {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      }
+    </script>
+    <script>
+      function setSelectedImage(imagePath) {
+        document.getElementById("selectedImagePath").value = imagePath;
+        document.getElementById("archivo").value = "";
+        document.getElementById("imagenPreview").src = imagePath;
+        document.getElementById("imagenPreview").style.display = "block";
+        $("#seleccionImagenModal").modal("hide");
+      }
+
+      function imagenCargada() {
+        var archivoInput = document.getElementById("archivo");
+        if (archivoInput.files && archivoInput.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("imagenPreview").src = e.target.result;
+            document.getElementById("imagenPreview").style.display = "block";
+          };
+          reader.readAsDataURL(archivoInput.files[0]);
+        }
+        document.getElementById("selectedImagePath").value = "";
+      }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

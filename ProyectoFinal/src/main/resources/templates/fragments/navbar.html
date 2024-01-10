@@ -1,0 +1,92 @@
+<nav
+  th:fragment="navbar"
+  class="navbar navbar-expand-lg navbar-light fixed-top"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+  <a class="navbar-brand" href="/">
+    <div id="logo-container">
+      <img
+        id="logo"
+        th:src="@{/images/buscasitasGold.png}"
+        alt="Buscasita.com.ar"
+      />
+      <p class="logo-text">Buscasitas.com.ar</p>
+    </div>
+  </a>
+
+  <i class="fa-solid fa-user" style="color: #c9a97e"></i>
+  <small
+    th:if="${session.usuariosession != null}"
+    th:text="${session.usuariosession.nombre} + ${session.usuariosession.apellido}"
+  ></small>
+
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav" style="z-index: 1000">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="btn btn-info" th:href="@{/}"><i class="fa-solid fa-house-chimney-user" style="color: #b4966a;"></i> Home</a>
+      </li>
+      <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+        <a class="btn btn-info" th:href="@{/usuario/lista}"><i class="fa-solid fa-users" style="color: #d0b084;"></i></i> Usuarios</a>
+      </li>
+      <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'ENTE')">
+        <a class="btn btn-info" th:href="@{/inmueble/lista}"><i class="fa-solid fa-building-circle-check" style="color: #d0b084;"></i></i> Inmuebles</a>
+      </li>
+      <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'ENTE')">
+        <a class="btn btn-info" th:href="@{/inmueble/registrar}"
+          ><i class="fa-solid fa-shop" style="color: #d4b285"></i> Vende o alquila</a>
+     <li
+        class="nav-item"
+        th:if="${T(com.proyectofinal.SeguridadWeb).isAuthenticated()}">
+        <a
+          class="btn btn-info"
+          th:href="@{/oferta/realizadas/{idCodigoTributario}(idCodigoTributario=${session.usuariosession.idCodigoTributario})}"
+          ><i class="fa-solid fa-gavel" style="color: #d3b488;"></i> Ofertas!</a
+        >
+      </li>
+      <li
+        class="nav-item"
+        th:if="${T(com.proyectofinal.SeguridadWeb).isAuthenticated()}"
+      >
+        <a
+          class="btn btn-info"
+          th:href="@{/reclamo/lista/{idCodigoTributario}(idCodigoTributario=${session.idCodigoTributario})}"
+          ><i class="fa-solid fa-bell-concierge" style="color: #d1b185;"></i></i> Reclamos</a
+        >
+      </li>
+      <li
+        th:if="${T(com.proyectofinal.SeguridadWeb).isAuthenticated()}"
+        class="nav-item"
+      >
+        <a
+          class="btn btn-info"
+          th:href="@{/usuario/perfil/{idCodigoTributario}}"
+          ><i class="fa-solid fa-user" style="color: #caa87c;"></i> Perfil</a
+        >
+      </li>
+      <li class="nav-item" sec:authorize="!isAuthenticated()">
+        <a class="btn btn-info" th:href="@{/usuario/registrar}"><i class="fa-solid fa-address-card" style="color: #af9065"></i> Regístrate!</a>
+      </li>
+      <li class="nav-item" sec:authorize="!isAuthenticated()">
+        <a class="btn btn-info" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket" style="color: #9d8565"></i> Ingresar</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-info" sec:authorize="isAuthenticated()" href="/logout"
+          ><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ceac80"></i> Salir</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Registrar Cita</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" th:href="@{/css/formulario.css}" />
+
+    <link
+      rel="shortcut icon"
+      sizes="76x76"
+      type="image/x-icon"
+      th:href="@{images/logoInmobiliaria2.png}"
+    />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- jQuery UI -->
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <nav th:replace="fragments/navbar :: nav"></nav>
+
+    <div class="align-center">
+      <h1>Registrar Cita</h1>
+    </div>
+    <form
+      th:action="@{/cita/registrar/${cuentaTributaria}}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <input hidden th:value="${cuentaTributaria}" name="cuentaTributaria" />
+      <input
+        hidden
+        th:if="${usuario != null}"
+        th:value="${usuario.idCodigoTributario}"
+        name="idCliente"
+      />
+
+      <input
+        hidden
+        th:if="${usuario != null}"
+        th:value="${usuario.idCodigoTributario}"
+        name="idEnte"
+      />
+      <!-- Agrega este input oculto al formulario -->
+      <!-- Asegúrate de que la cuentaTributaria está disponible para el script -->
+      <input
+        type="hidden"
+        id="cuentaTributaria"
+        th:value="${cuentaTributaria}"
+      />
+
+      <input type="hidden" id="idHorario" name="idHorario" th:value="${idHorario}" />
+
+      <!-- Rango Horario por dia de la semana
+      <label for="diaSemana">Horarios Disponibles</label>
+      <select
+        class="controls"
+        id="diaSemana"
+        name="diaSemana"
+        th:onchange="actualizarHorariosDisponibles(this.value)"
+                >
+        <option value="" selected>Selecciona un día</option>
+        <th:block th:each="rango : ${rangoHorario}">
+          <option th:value="${rango.id}" th:text="${rango.diaSemana}"></option>
+        </th:block>
+      </select>
+
+      <label for="horario">Hora de inicio:</label>
+      <select class="controls" id="horario" name="horario" required>
+                Las opciones se llenarán dinámicamente
+      </select>
+                -->
+
+      <label for="fecha">Fecha:</label>
+      <input class="controls" type="text" id="fecha" name="fecha" required />
+
+      <label for="horario">Hora de la Cita:</label>
+      <select
+        class="controls"
+        id="horaSeleccionada"
+        name="horaSeleccionada"
+        required
+      ></select>
+
+      <input
+        class="controls"
+        type="text"
+        id="nota"
+        name="nota"
+        placeholder="Nota de la Cita"
+      />
+
+      <span th:text="${cuentaTributaria}"></span>
+
+      <br />
+
+      <button type="submit">Guardar Cita</button>
+    </form>
+    <div th:replace="fragments/footer :: footer"></div>
+    <script>
+      // Función que se llama cuando el día de la semana cambia
+      function actualizarHorariosPorRango(rangoId) {
+        // Obtén el selector de horario
+        var selectHorario = $("#horaSeleccionada");
+        var idRangoHorarioInput = document.getElementById("idHorario");
+
+        // Limpia las opciones existentes
+        selectHorario.innerHTML = "";
+
+        // Aquí suponemos que tienes una variable global o una forma de obtener los horarios disponibles
+        // Por ejemplo, podrías tener algo como una variable 'horariosPorRango' que contenga esta información
+        var horariosDisponibles = horariosPorRango[rangoId]; // Esta debe ser proporcionada de alguna manera
+
+        // Llena las opciones de horario
+        horariosDisponibles.forEach(function (hora) {
+          var option = new Option(hora, hora);
+          // Añade la opción al selector de horario
+          selectHorario.add(option);
+        });
+
+        // Actualiza el nombre del campo oculto con la ID del rangoHorario seleccionado
+        idRangoHorarioInput.value = rangoId;
+      }
+    </script>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      // Inicializa la variable en el alcance global
+      var horariosPorRango = /*[[${horariosDisponiblesMap}]]*/ {};
+      var idsRangoHorario = []; // Agrega esta línea para inicializar la variable global
+
+      document.addEventListener("DOMContentLoaded", (event) => {
+        // La página está completamente cargada, ahora puedes asegurarte de que
+        // horariosPorRango esté disponible para tu función actualizarHorariosDisponibles
+      });
+      /*]]>*/
+    </script>
+
+    // Script para fechas
+    <script>
+      var cuentaTributaria = $("#cuentaTributaria").val();
+
+      $(document).ready(function () {
+          var horariosPorFecha = {};
+
+          $.ajax({
+              url: "/cita/horarios-disponibles/" + cuentaTributaria,
+              method: "GET",
+              success: function (data) {
+                  horariosPorFecha = data;
+                  console.log("Datos cargados: ", horariosPorFecha);
+
+                  Object.entries(horariosPorFecha).forEach(([fecha, horas]) => {
+                      console.log("Fecha:", fecha, "Horas:", horas);
+                  });
+
+                  $("#fecha").datepicker({
+                      dateFormat: "yy-mm-dd",
+                      beforeShowDay: function (date) {
+                          var stringDate = $.datepicker.formatDate("yy-mm-dd", date);
+                          var available = horariosPorFecha.hasOwnProperty(stringDate);
+                          console.log(stringDate + " disponible: " + available);
+                          return [available];
+                      },
+                      onSelect: function (selectedDate) {
+                          var horarios = horariosPorFecha[selectedDate];
+                          if (horarios && horarios.length > 0) {
+                              // Llama a la función para actualizar el selector de horarios
+                              actualizarSelectorHorarios(horarios);
+                              // Actualiza el valor de idHorario
+                              actualizarIdHorario();
+                          } else {
+                              console.log(
+                                  "No hay horarios disponibles para la fecha seleccionada."
+                              );
+                              // Puedes manejar esta situación de la manera que consideres apropiada
+                          }
+                      },
+                  });
+              },
+              error: function (error) {
+                  console.error("Error al cargar los datos: ", error);
+              },
+          });
+
+          // Función para actualizar el selector de horarios
+          function actualizarSelectorHorarios(horarios) {
+              var selectHorario = $("#horaSeleccionada");
+              selectHorario.empty();
+
+              if (horarios) {
+                  horarios.forEach(function (hora) {
+                      selectHorario.append(new Option(hora, hora));
+                  });
+              }
+          }
+
+          // Función para actualizar el valor de idHorario
+          function actualizarIdHorario() {
+              var index = $("#horaSeleccionada")[0].selectedIndex;
+              $("#idHorario").val(index + 1); // Suma 1 para tener un valor distinto de cero
+              console.log("idHorario actualizado:", $("#idHorario").val());
+          }
+      });
+    </script>
+  </body>
+</html>

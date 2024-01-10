@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Perfil de Usuario</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+
+    <link
+      rel="shortcut icon"
+      sizes="76x76"
+      type="image/x-icon"
+      th:href="@{images/logoInmobiliaria2.png}"
+    />
+  </head>
+  <head th:replace="fragments/head :: head"> </head>
+
+  <body class="loging-body">
+    <!-- This is to display the Navbar of the website. -->
+    <nav th:replace="fragments/navbar :: nav"></nav>
+    <br />
+    <!-- This is to make the Form Contents appear on the Image -->
+    <div class="container emp-profile">
+      <div class="row">
+        <div class="col-md-4">
+          <div
+            id="preview"
+            class="profile-img"
+            th:style="|background-image:url(@{/images/profileDefault.svg})|"
+          >
+            <img
+              th:src="@{/imagen/perfil/__${usuario.idCodigoTributario}__}"
+              alt=""
+              height="150px"
+              width="150px"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="profile-head">
+            <h5
+              th:if="${session.usuariosession != null}"
+              th:text=" ' Bienvenido '+ ${session.usuariosession.nombre} + ' cómo estas? ' "
+            ></h5>
+            <h6>Somos afortunados de tenerte aquí hoy!</h6>
+            <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="home-tab"
+                  data-toggle="tab"
+                  href="#home"
+                  role="tab"
+                  aria-controls="home"
+                  aria-selected="true"
+                  >Perfil Personal</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="profile-tab"
+                  data-toggle="tab"
+                  href="#profile"
+                  role="tab"
+                  aria-controls="profile"
+                  aria-selected="false"
+                  >Mis Transacciones</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <a
+            th:href="@{/usuario/modificar/__${usuario.idCodigoTributario}__}"
+            class="btn btn-secondary my-2 boton Volver botones"
+            name="btnAddMore"
+            value="Editar"
+            >Editar</a
+          >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="profile-work">
+            <p>Alquileres favoritos</p>
+            <a href="">Cabaña Esquel</a><br />
+            <a href="">Chalet (5hab)</a><br />
+            <a href="">Puerto Madero</a>
+            <p></p>
+            <p>En Venta favoritos</p>
+            <a href="">Terreno 8000m2</a><br />
+            <a href="">Isla en Tigre</a><br />
+            <a href="">Dpto.Costa..</a><br />
+            <a href="">Dpto.Miramar</a><br />
+            <a href="">PH Colegiales</a><br />
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="tab-content profile-tab" id="myTabContent">
+            <div
+              class="tab-pane fade show active"
+              id="home"
+              role="tabpanel"
+              aria-labelledby="home-tab"
+            >
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Código Tributario</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.idCodigoTributario}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Tipo de Persona</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.tipoPersona}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Nombre</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.nombre}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Apellido</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.apellido}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Email</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.email}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Teléfono celular</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.celular}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Dirección</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.direccion}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Provincia</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.provincia}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Ciudad</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.ciudad}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>DNI</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.DNI}"
+                  ></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Rol</label>
+                </div>
+                <div class="col-md-6">
+                  <p
+                    th:if="${session.usuariosession != null}"
+                    th:text="${session.usuariosession.Rol}"
+                  ></p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="tab-pane fade"
+              id="profile"
+              role="tabpanel"
+              aria-labelledby="profile-tab"
+            >
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Compras</label>
+                </div>
+                <div class="col-md-6">
+                  <p>El usuario ha realizado ""</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Ventas</label>
+                </div>
+                <div class="col-md-6">
+                  <p>El usuario ha realizado ""</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Alquileres</label>
+                </div>
+                <div class="col-md-6">
+                  <p>El usuario ha realizado ""</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Fechas de pago</label>
+                </div>
+                <div class="col-md-6">
+                  <p>El usuario ha realizado ""</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Citas</label>
+                </div>
+                <div class="col-md-6">
+                  <p>El usuario ha realizado ""</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Ofertas</label>
+                </div>
+                <div class="col-md-6">
+                  <p>El usuario ha realizado ""</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Reclamos</label>
+                </div>
+                <div class="col-md-6">
+                  <p>El usuario ha realizado ""</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <label>Comentarios</label><br />
+                  <p>El usuario ha realizado ""</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Ends here. -->
+    <hr />
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!--JavaScript-->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script>
+      function getImagePreview(event) {
+        var image = URL.createObjectURL(event.target.files[0]);
+        var imagediv = document.getElementById("preview");
+        var newimg = document.createElement("img");
+        imagediv.innerHTML = "";
+        newimg.src = "/images/buscasitasGold.png";
+        newimg.width = "100";
+        imagediv.appendChild(newimg);
+      }
+    </script>
+  </body>
+</html>
